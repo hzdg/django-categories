@@ -13,6 +13,43 @@ Django Categories grew out of our need to provide a basic hierarchical taxonomy 
 
 As a news site, our stories, photos, and other content get divided into "sections" and we wanted all the apps to use the same set of sections. As our needs grew, the Django Categories grew in the functionality it gave to category handling within web pages.
 
+Forking Information
+===================
+
+This repository has been forked from https://github.com/callowayproject/django-categories
+
+**Reason**: Adding a category (from admin panel) was crashing due to an unhandled case in django-categories package. 
+
+**Steps** followed for fixing this issue,
+
+* Forked repository from https://github.com/callowayproject/django-categories into hzdg organization
+* Cloned repository locally via,
+
+   .. code-block:: bash
+  
+    git clone git@github.com:hzdg/django-categories.git
+
+* Created a new branch from tag 1.2.2 (which was the django-categories version being used by HZDG project) via,
+
+   .. code-block:: bash
+
+    git checkout -b 1.2.2-descendant-fix 1.2.2
+* Applied the fix (in categories/base.py) by wrapping code for getting descendants, in an if/else clause,
+
+   .. code-block:: python 
+ 
+    if self.instance.pk:
+        decendant_ids = self.instance.get_descendants().values_list('id', flat=True)
+    else:
+        decendant_ids = []
+* Pushed branch to the forked repository
+* The fix can be used by adding this line to requirements file,
+
+   .. code-block:: bash
+
+    git+https://github.com/hzdg/django-categories.git@1.2.2-descendant-fix
+
+
 New in 1.2
 ==========
 
